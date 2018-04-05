@@ -42,12 +42,7 @@
   <body>
     <div id="right-panel">
       <div id="inputs">
-        <pre>
-var origin1 = {lat: 55.930, lng: -3.118};
-var origin2 = 'Greenwich, England';
-var destinationA = 'Stockholm, Sweden';
-var destinationB = {lat: 50.087, lng: 14.421};
-        </pre>
+        Search by suburb or postcode
         <div>
             <Input type="search" id="destination" value="" on
                    placeholder="Destination" />
@@ -74,8 +69,25 @@ var destinationB = {lat: 50.087, lng: 14.421};
        document.getElementById('search').onclick = () => startDistanceMatrixService(map, markersArray);
       }
 
+      function dayCareCenters() {
+        // this part should connect and fetch json data from the database
+        return [
+          'No, 5, rev king estate, ikorodo, lagos',
+          'N0 12, mama khalifa street, ajegunle, lagos',
+          'No 34, olunsogo close, ojota, lagos',
+          'No 2, ramat estate, ojota, lagos',
+          'No 4, lasgidi street, onipanu, lagos',
+          'No 67, mama peace, ogudu, ojota, lagos' 
+        ]
+      }
+
+      
+      function getSurburbMatch() {
+        let surburb = document.getElementById('origin').value;
+        return dayCareCenters.filter((daycareCenter) => daycareCenter.contains(surburb));
+      }
+
       function startDistanceMatrixService(map, markersArray) {
-          alert('working');
         var origin1 = 'ikorodu, lagos';
         var origin2 = document.getElementById('origin').value;
         var destinationA = document.getElementById('destination').value;
@@ -83,17 +95,15 @@ var destinationB = {lat: 50.087, lng: 14.421};
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
           origins: [origin1, origin2],
-          destinations: [destinationA, destinationB],
+          destinations: getSurburbMatch(),
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.METRIC,
           avoidHighways: false,
           avoidTolls: false
         }, function(response, status) {
           if (status !== 'OK') {
-            alert('Error was: ' + status);
+            alert('An error occured');
           } else {
-              alert('e dey ahppen');
-              console.log(JSON.stringify(response));
             deleteMarkers(markersArray);  
             responsePrinter(response, map, markersArray);
           }
