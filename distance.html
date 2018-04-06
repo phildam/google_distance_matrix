@@ -60,6 +60,7 @@
     </div>
     <div id="map"></div>
     <script>
+      var origin = ' ';
       function initMap() {
         var markersArray = [];
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -80,21 +81,51 @@
           'No 67, mama peace, ogudu, ojota, lagos' 
         ]
       }
+      
+      function getLocation() {
+       if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else { 
+         x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+     function showPosition(position) {
+       origin = new google.maps.LatLng(position.coords.latitude,
+          position.coords.longitude);
+      }
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
 
       
       function getSurburbMatch() {
         let surburb = document.getElementById('origin').value;
-        return dayCareCenters.filter((daycareCenter) => daycareCenter.contains(surburb));
+        return dayCareCenters.filter((daycareCenter) => daycareCenter.toLowerCase()
+                                     .includes(surburb.toLowerCase()));
       }
 
       function startDistanceMatrixService(map, markersArray) {
-        var origin1 = 'ikorodu, lagos';
+        
         var origin2 = document.getElementById('origin').value;
         var destinationA = document.getElementById('destination').value;
         var destinationB = 'maryland, lagos';
         var service = new google.maps.DistanceMatrixService;
         service.getDistanceMatrix({
-          origins: [origin1, origin2],
+          origins: [origin, origin2],
           destinations: getSurburbMatch(),
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.METRIC,
