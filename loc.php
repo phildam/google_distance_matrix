@@ -325,6 +325,7 @@ if(!isset($_SESSION['user'])){
             zoom: 4
           });
           
+          getLocation();
         }
 
         var origin1 = {lat: 55.930, lng: -3.118};
@@ -333,10 +334,10 @@ if(!isset($_SESSION['user'])){
             if (navigator.geolocation) {
               Notification.requestPermission(function(result) {  
                 navigator.geolocation.getCurrentPosition(function(position) {  
-  console.log('Geolocation permissions granted');  
-  console.log('Latitude:' + position.coords.latitude);  
-  console.log('Longitude:' + position.coords.longitude);  
-});
+                  console.log('Geolocation permissions granted');  
+                  console.log('Latitude:' + position.coords.latitude);  
+                  console.log('Longitude:' + position.coords.longitude);  
+                }, showError);
                 if (result === 'denied') {  
                   console.log('Permission wasn\'t granted. Allow a retry.');  
                   return;  
@@ -345,12 +346,11 @@ if(!isset($_SESSION['user'])){
                   return;  
                 }  
                 console.log('Permission was granted for notifications');  
-                 navigator.geolocation.getCurrentPosition(showPosition, showError);
-                
+                 
               });
                 
             } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
+                console.log("Geolocation is not supported by this browser.");
             }
         }
         
@@ -383,7 +383,7 @@ if(!isset($_SESSION['user'])){
           var locationType = ['Office Address', 'Home Address'];
           if(!registeredUser) {
             locationType = ["Your  Location"];
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
+            navigator.geolocation.getCurrentPosition(showPosition, showError, 10000);
           }
         //console.log('markersstdm: '+JSON.stringify(markersArray));
         console.log('userloc '+JSON.stringify(userLoc));
