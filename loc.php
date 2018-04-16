@@ -7,9 +7,9 @@ $homeAddress= '';
 $officeAddress = '';
 $isRegistered = false;
 if(!isset($_SESSION['user'])){
-  $isRegistered = false;
+  $isRegistered = "false";
 }else{
-  $isRegistered = true;
+  $isRegistered = "true";
   $homeAddress = $_SESSION['homeAddress'];
   $officeAddress = $_SESSION['officeAddress'];
 }
@@ -324,8 +324,7 @@ if(!isset($_SESSION['user'])){
             center: {lat:-25.2744, lng: 133.7751},
             zoom: 4
           });
-          
-          getLocation();
+          // getLocation();
         }
 
         var origin1 = {lat: 55.930, lng: -3.118};
@@ -337,7 +336,7 @@ if(!isset($_SESSION['user'])){
                   console.log('Geolocation permissions granted');  
                   console.log('Latitude:' + position.coords.latitude);  
                   console.log('Longitude:' + position.coords.longitude);  
-                }, showError);
+                });
                 if (result === 'denied') {  
                   console.log('Permission wasn\'t granted. Allow a retry.');  
                   return;  
@@ -380,8 +379,10 @@ if(!isset($_SESSION['user'])){
 
        function startDistanceMatrixService( userLoc, educatorLoc, id, registeredUser) {
         try{
+          getLocation();
           var locationType = ['Office Address', 'Home Address'];
-          if(!registeredUser) {
+          console.log("a registered user: "+registeredUser);
+          if(registeredUser === "false") {
             locationType = ["Your  Location"];
             navigator.geolocation.getCurrentPosition(showPosition, showError, 10000);
           }
