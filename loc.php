@@ -335,8 +335,8 @@ if(!isset($_SESSION['user'])){
               Notification.requestPermission(function(result) {  
                 navigator.geolocation.getCurrentPosition(function(position) {  
                   console.log('Geolocation permissions granted');  
-                  lat =  position.coords.latitude);  
-                  lng = position.coords.longitude);  
+                  lat =  position.coords.latitude;  
+                  lng = position.coords.longitude;  
                 });
                 if (result === 'denied') {  
                   console.log('Permission wasn\'t granted. Allow a retry.');  
@@ -386,7 +386,6 @@ if(!isset($_SESSION['user'])){
           if(registeredUser === "false") {
             locationType = ["Your  Location"];
             userLoc = {lat: lat, lng: lng};
-
             navigator.geolocation.getCurrentPosition(showPosition, showError, 10000);
           }
         //console.log('markersstdm: '+JSON.stringify(markersArray));
