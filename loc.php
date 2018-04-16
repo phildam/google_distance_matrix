@@ -318,6 +318,8 @@ if(!isset($_SESSION['user'])){
     // center: {lat: 133.7751, lng: 25.2744},
       var map;
       var markersArray = [];
+      var lat = "";
+      var lng = "";
       
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
@@ -327,15 +329,14 @@ if(!isset($_SESSION['user'])){
           // getLocation();
         }
 
-        var origin1 = {lat: 55.930, lng: -3.118};
-
+        
        function getLocation() {
             if (navigator.geolocation) {
               Notification.requestPermission(function(result) {  
                 navigator.geolocation.getCurrentPosition(function(position) {  
                   console.log('Geolocation permissions granted');  
-                  console.log('Latitude:' + position.coords.latitude);  
-                  console.log('Longitude:' + position.coords.longitude);  
+                  lat =  position.coords.latitude);  
+                  lng = position.coords.longitude);  
                 });
                 if (result === 'denied') {  
                   console.log('Permission wasn\'t granted. Allow a retry.');  
@@ -384,6 +385,8 @@ if(!isset($_SESSION['user'])){
           console.log("a registered user: "+registeredUser);
           if(registeredUser === "false") {
             locationType = ["Your  Location"];
+            userLoc = {lat: lat, lng: lng};
+
             navigator.geolocation.getCurrentPosition(showPosition, showError, 10000);
           }
         //console.log('markersstdm: '+JSON.stringify(markersArray));
